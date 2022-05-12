@@ -70,10 +70,10 @@ defmodule Mix.ArangoXEcto do
   """
   @spec path_to_priv_repo(Ecto.Repo.t()) :: String.t()
   def path_to_priv_repo(repo) do
-    app = Keyword.fetch!(repo.config(), :otp_app)
+    app = Mix.Project.config()[:app]
 
     repo_dir =
-      repo.get_dynamic_repo()
+      repo
       |> to_string()
       |> String.split(".")
       |> List.last()

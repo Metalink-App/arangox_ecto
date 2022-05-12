@@ -90,8 +90,12 @@ defmodule Mix.Tasks.Ecto.Migrate.Arango do
 
   @spec down(binary()) :: :ok
   def down(db_name) do
-    [last_migrated_version | _] = versions(db_name)
+    versions(db_name) |> maybe_down_migrations(db_name)
+  end
 
+  defp maybe_down_migrations([], _db_name), do: Mix.shell().info("No migrations to action :)")
+
+  defp maybe_down_migrations([last_migrated_version | _], db_name) do
     module =
       last_migrated_version
       |> migration_path()
